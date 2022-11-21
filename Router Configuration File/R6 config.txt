@@ -1,0 +1,59 @@
+Router>en
+Router#erase startup-config
+Erasing the nvram filesystem will remove all configuration files! Continue? [confirm]y[OK]
+Erase of nvram: complete
+%SYS-7-NV_BLOCK_INIT: Initialized the geometry of nvram
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#hostname R6
+R6(config)#no ip domain-lookup  
+R6(config)#int g0/0
+R6(config-if)#ip address 10.30.20.1 255.255.254.0
+R6(config-if)#no shut
+
+R6(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to up
+
+R6(config-if)#int s0/0/0
+R6(config-if)#ip address 10.30.22.130 255.255.255.248
+R6(config-if)#no shut
+
+R6(config-if)#
+%LINK-5-CHANGED: Interface Serial0/0/0, changed state to up
+
+R6(config-if)#
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial0/0/0, changed state to up
+
+R6(config-if)#int s0/0/1
+R6(config-if)#ip address 10.30.22.137 255.255.255.248
+R6(config-if)#clock rate 64000
+R6(config-if)#no shut
+
+R6(config-if)#
+%LINK-5-CHANGED: Interface Serial0/0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial0/0/1, changed state to up
+
+R6(config-if)#end
+R6#
+%SYS-5-CONFIG_I: Configured from console by console
+
+R6#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+R6#
+R6#conf t
+R6(config)#ip route 0.0.0.0 0.0.0.0 s0/0/1
+R6(config)#ip route 0.0.0.0 0.0.0.0 s0/0/0 5
+R6(config)#end
+R6#
+%SYS-5-CONFIG_I: Configured from console by console
+
+R6#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+R4#
